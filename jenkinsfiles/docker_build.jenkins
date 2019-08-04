@@ -28,7 +28,6 @@ pipeline {
                 dir ('docker/toolbox') {
                 	sh 'docker build -t horm/toolbox:latest . '
                 }
-                }
             }
         }
         stage("docker push") {
