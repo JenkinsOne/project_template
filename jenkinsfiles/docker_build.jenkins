@@ -5,7 +5,7 @@ properties([disableConcurrentBuilds()])
 pipeline {
     agent { 
         label 'master'
-        }
+    }
     triggers { pollSCM('* * * * *') }
     options {
         buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
@@ -33,9 +33,9 @@ pipeline {
         stage("docker push") {
             steps {
                 echo " ============== start pushing image =================="
-                sh """
+                sh '''
                     docker push horm/toolbox:latest
-                    """
+                    '''
             }
         }
     }
