@@ -12,12 +12,31 @@ pipeline {
         timestamps()
     }
     stages {
+        stage("docker login") {
+            steps {
+                echo " ============== docker login =================="
+                withCredentials([usernamePassword(credentialsId: 'dockerhub_horm', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh """
+                    docker login -u $USERNAME -p $PASSWORD
+                    """
+                }
+            }
+        }
         stage("create docker image") {
             steps {
-                echo " ============== start building image =================="
+                echo " ============== create docker image =================="
                 dir ('docker/toolbox') {
                 	sh 'docker build -t horm/toolbox:latest . '
                 }
+                }
+            }
+        }
+        stage("docker push") {
+            steps {
+                echo " ============== start pushing image =================="
+                sh """
+                    docker push horm/toolbox:latest
+                    """
             }
         }
     }
